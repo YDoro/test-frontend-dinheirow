@@ -1,0 +1,7 @@
+
+.Card {
+    @apply bg-[linear-gradient(to_bottom,rgb(15,15,15)_50%,rgb(230,36,41)_50%)] transition-[background-position] ease-in duration-500 hover:bg-[0_-100%] cursor-pointer;
+    width: 192px; height: 355px;
+    background-size: 100% 200%;
+    clip-path: polygon(100% 0, 100% 93%, 93% 100%, 0 100%, 0 0);
+}
