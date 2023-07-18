@@ -13,7 +13,16 @@ module.exports = {
       },
       fontFamily:{
         marvel: 'Bebas Neue'
-      }
+      },
+      animation:{
+        fadeIn: 'toggleIn 1s 1'
+      },
+      keyframes:{
+          toggleIn:{
+            "0%":{opacity:0},
+            "100%":{opacity:1},
+          }
+      },
 
     },
   },
