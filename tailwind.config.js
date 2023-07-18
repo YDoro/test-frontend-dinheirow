@@ -9,7 +9,9 @@ module.exports = {
     extend: {
       colors:{
         primaryGray: "#161616",
-        secondaryGray:"#393939"
+        secondaryGray:"#bbbbbb",
+        primaryRed:"#ec1d24",
+        secondaryRed:"#e62429"
       },
       fontFamily:{
         marvel: 'Bebas Neue'
