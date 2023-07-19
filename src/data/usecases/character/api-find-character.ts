@@ -4,7 +4,7 @@ import { FindCharacter } from "@/domain/usecases/find-character";
 
 export class APIFindCharacter implements FindCharacter {
   constructor(private readonly findCharacterService: FindCharacterService) {}
-  find(query: any): Promise<Character[]> {
-    throw new Error("Method not implemented.");
+  async find(query: any): Promise<Character[]> {
+    return await this.findCharacterService.find(query);
   }
 }
