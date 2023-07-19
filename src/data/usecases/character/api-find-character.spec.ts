@@ -27,4 +27,11 @@ describe("find character", () => {
     await sut.find({ limit: 20, offset: 10 });
     expect(fcsSpy).toHaveBeenCalledWith({ limit: 20, offset: 10 });
   });
+
+  test("should throw if find character service throws", async () => {
+    const { fcs, sut } = makeSUT();
+    jest.spyOn(fcs, "find").mockRejectedValueOnce(new Error("mock"));
+    const promise = sut.find({ limit: 20, offset: 10 });
+    expect(promise).rejects.toThrow();
+  });
 });
