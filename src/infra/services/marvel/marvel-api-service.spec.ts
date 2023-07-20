@@ -58,4 +58,17 @@ describe("Marvel API service", () => {
     const promise = sut.find({});
     expect(promise).rejects.toThrow();
   });
+  test("should call qsHelper with ts publicKey and hash", async () => {
+    const { sut, qsHelper } = makeSUT();
+    const querySpy = jest.spyOn(qsHelper, "fromObject");
+    const fakeHash = `hashed_${ts}${privateKey}${publicKey}`;
+    await sut.find({ lorem: "ispum" });
+
+    expect(querySpy).toHaveBeenCalledWith({
+      ts,
+      apiKey: publicKey,
+      hash: fakeHash,
+      lorem: "ispum",
+    });
+  });
 });
