@@ -19,7 +19,7 @@ export class MarvelAPIService implements FindCharacterService {
     );
     const q = this.qsHelper.fromObject({
       ts: this.ts,
-      apiKey: this.publicKey,
+      apikey: this.publicKey,
       hash,
       ...query,
     });

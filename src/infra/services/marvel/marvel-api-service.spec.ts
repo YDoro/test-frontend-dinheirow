@@ -66,7 +66,7 @@ describe("Marvel API service", () => {
     await sut.find({ lorem: "ispum" });
     expect(querySpy).toHaveBeenCalledWith({
       ts,
-      apiKey: publicKey,
+      apikey: publicKey,
       hash: fakeHash,
       lorem: "ispum",
     });
@@ -86,7 +86,7 @@ describe("Marvel API service", () => {
     const httpSpy = jest.spyOn(httpClient, "get");
     await sut.find({ lorem: "ipsum" });
     expect(httpSpy).toHaveBeenCalledWith(
-      `/v1/public/characters?ts=${ts}&apiKey=${publicKey}&hash=hashed_${ts}${privateKey}${publicKey}&lorem=ipsum`
+      `/v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=hashed_${ts}${privateKey}${publicKey}&lorem=ipsum`
     );
   });
   test("should return the full content of the http client response", async () => {
