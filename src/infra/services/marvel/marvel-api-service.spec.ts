@@ -52,4 +52,10 @@ describe("Marvel API service", () => {
     await sut.find({});
     expect(hasherSpy).toHaveBeenCalledWith(ts + privateKey + publicKey);
   });
+  test("should throw if hasher throws", async () => {
+    const { sut, hasher } = makeSUT();
+    jest.spyOn(hasher, "hash").mockRejectedValueOnce(new Error("mock"));
+    const promise = sut.find({});
+    expect(promise).rejects.toThrow();
+  });
 });
