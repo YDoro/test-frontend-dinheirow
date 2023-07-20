@@ -89,4 +89,12 @@ describe("Marvel API service", () => {
       `/v1/public/characters?ts=${ts}&apiKey=${publicKey}&hash=hashed_${ts}${privateKey}${publicKey}&lorem=ipsum`
     );
   });
+  test("should return the full content of the http client response", async () => {
+    const { sut, httpClient } = makeSUT();
+    jest
+      .spyOn(httpClient, "get")
+      .mockResolvedValueOnce({ data: { foo: "bar" } });
+    const res = await sut.find({ lorem: "ipsum" });
+    expect(res).toEqual({ data: { foo: "bar" } });
+  });
 });
