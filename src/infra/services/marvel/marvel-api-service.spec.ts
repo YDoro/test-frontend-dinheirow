@@ -45,25 +45,25 @@ const makeSUT = (): SUTTypes => {
 };
 
 describe("Marvel API service", () => {
-  //TODO - perform tests
   test("should call hasher with ts+privateKey+publicKey", async () => {
     const { sut, hasher } = makeSUT();
     const hasherSpy = jest.spyOn(hasher, "hash");
     await sut.find({});
     expect(hasherSpy).toHaveBeenCalledWith(ts + privateKey + publicKey);
   });
+
   test("should throw if hasher throws", async () => {
     const { sut, hasher } = makeSUT();
     jest.spyOn(hasher, "hash").mockRejectedValueOnce(new Error("mock"));
     const promise = sut.find({});
     expect(promise).rejects.toThrow();
   });
+
   test("should call qsHelper with ts publicKey and hash", async () => {
     const { sut, qsHelper } = makeSUT();
     const querySpy = jest.spyOn(qsHelper, "fromObject");
     const fakeHash = `hashed_${ts}${privateKey}${publicKey}`;
     await sut.find({ lorem: "ispum" });
-
     expect(querySpy).toHaveBeenCalledWith({
       ts,
       apiKey: publicKey,
@@ -71,6 +71,7 @@ describe("Marvel API service", () => {
       lorem: "ispum",
     });
   });
+
   test("should throw if qsHelper throws", async () => {
     const { sut, qsHelper } = makeSUT();
     jest.spyOn(qsHelper, "fromObject").mockImplementationOnce((_) => {
@@ -78,5 +79,14 @@ describe("Marvel API service", () => {
     });
     const promise = sut.find({});
     expect(promise).rejects.toThrow();
+  });
+
+  test("should call httpClient with the expected string", async () => {
+    const { sut, httpClient } = makeSUT();
+    const httpSpy = jest.spyOn(httpClient, "get");
+    await sut.find({ lorem: "ipsum" });
+    expect(httpSpy).toHaveBeenCalledWith(
+      `/v1/public/characters?ts=${ts}&apiKey=${publicKey}&hash=hashed_${ts}${privateKey}${publicKey}&lorem=ipsum`
+    );
   });
 });
