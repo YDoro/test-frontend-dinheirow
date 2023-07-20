@@ -23,7 +23,7 @@ export class MarvelAPIService implements FindCharacterService {
       hash,
       ...query,
     });
-
-    return new Promise((r) => r({}));
+    const res = await this.httpClient.get("/v1/public/characters" + q);
+    return res;
   }
 }
