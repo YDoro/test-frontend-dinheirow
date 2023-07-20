@@ -12,7 +12,11 @@ export class MarvelAPIService implements FindCharacterService {
     private readonly publicKey: string,
     private readonly ts: string
   ) {}
-  find(query: any): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async find(query: any): Promise<any> {
+    const hash = await this.hasher.hash(
+      this.ts + this.privateKey + this.publicKey
+    );
+    return new Promise((r) => r({}));
   }
 }
