@@ -71,4 +71,12 @@ describe("Marvel API service", () => {
       lorem: "ispum",
     });
   });
+  test("should throw if qsHelper throws", async () => {
+    const { sut, qsHelper } = makeSUT();
+    jest.spyOn(qsHelper, "fromObject").mockImplementationOnce((_) => {
+      throw new Error("mock");
+    });
+    const promise = sut.find({});
+    expect(promise).rejects.toThrow();
+  });
 });
