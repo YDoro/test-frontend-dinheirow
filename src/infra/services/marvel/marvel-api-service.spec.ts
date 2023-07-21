@@ -1,5 +1,5 @@
 import { Hasher } from "@/data/protocols/criptography/hasher";
-import { HttpClient } from "@/infra/protocols/http";
+import { HttpClient, HttpClientResponse } from "@/infra/protocols/http";
 import { QueryStringHelper } from "../../helpers/query-string-helper";
 import { MarvelAPIService } from "./marvel-api-service";
 
@@ -18,10 +18,11 @@ const makeFakeHasher = (): Hasher => {
   }
   return new HasherStub();
 };
+
 const makeFakeHttpClient = (): HttpClient => {
   class HttpClientStub implements HttpClient {
-    get(url: string): Promise<any> {
-      return new Promise((r) => r({}));
+    async get(url: string): Promise<HttpClientResponse<any>> {
+      return new Promise((r) => r({ status: 200, data: { lorem: "ipsum" } }));
     }
   }
   return new HttpClientStub();
@@ -93,8 +94,8 @@ describe("Marvel API service", () => {
     const { sut, httpClient } = makeSUT();
     jest
       .spyOn(httpClient, "get")
-      .mockResolvedValueOnce({ data: { foo: "bar" } });
+      .mockResolvedValueOnce({ status: 200, data: { foo: "bar" } });
     const res = await sut.find({ lorem: "ipsum" });
-    expect(res).toEqual({ data: { foo: "bar" } });
+    expect(res).toEqual({ foo: "bar" });
   });
 });
