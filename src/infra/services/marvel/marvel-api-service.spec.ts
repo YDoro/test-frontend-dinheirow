@@ -1,5 +1,6 @@
 import { Hasher } from "@/data/protocols/criptography/hasher";
 import { HttpClient, HttpClientResponse } from "@/infra/protocols/http";
+import { ServiceFailed } from "../../../presentation/errors/service-failed";
 import { QueryStringHelper } from "../../helpers/query-string-helper";
 import { MarvelAPIService } from "./marvel-api-service";
 
@@ -90,12 +91,19 @@ describe("Marvel API service", () => {
       `/v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=hashed_${ts}${privateKey}${publicKey}&lorem=ipsum`
     );
   });
+
   test("should return the full content of the http client response", async () => {
+    const { sut } = makeSUT();
+    const res = await sut.find({ lorem: "ipsum" });
+    expect(res).toEqual({ lorem: "ipsum" });
+  });
+
+  test("should throw if response status is not 200", async () => {
     const { sut, httpClient } = makeSUT();
     jest
       .spyOn(httpClient, "get")
-      .mockResolvedValueOnce({ status: 200, data: { foo: "bar" } });
-    const res = await sut.find({ lorem: "ipsum" });
-    expect(res).toEqual({ foo: "bar" });
+      .mockResolvedValueOnce({ status: 500, data: { foo: "bar" } });
+    const promise = sut.find({ lorem: "ipsum" });
+    expect(promise).rejects.toThrowError(ServiceFailed);
   });
 });
