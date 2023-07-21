@@ -2,6 +2,8 @@ import { Hasher } from "@/data/protocols/criptography/hasher";
 import { FindCharacterService } from "@/data/protocols/services/find-character-service";
 import { QueryStringHelper } from "@/infra/helpers/query-string-helper";
 import { HttpClient } from "@/infra/protocols/http";
+import { MarvelCharacterResponse } from "@/infra/protocols/services/marvel/character-request";
+import { ServiceFailed } from "../../../presentation/errors/service-failed";
 
 export class MarvelAPIService implements FindCharacterService {
   constructor(
@@ -23,7 +25,12 @@ export class MarvelAPIService implements FindCharacterService {
       hash,
       ...query,
     });
-    const res = await this.httpClient.get("/v1/public/characters" + q);
-    return res;
+
+    const res = await this.httpClient.get<MarvelCharacterResponse>(
+      "/v1/public/characters" + q
+    );
+    if (res.status === 200) return res.data;
+
+    throw new ServiceFailed(MarvelAPIService.name, res);
   }
 }
