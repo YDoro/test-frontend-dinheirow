@@ -6,7 +6,7 @@ describe("<CharacterCard/>", () => {
     render(
       <CharacterCard
         image="https://cdn.marvel.com/content/1x/021slq_ons_crd_03.jpg"
-        description="peter quill"
+        nameComplement="peter quill"
         name="star-lord"
       />
     );

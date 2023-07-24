@@ -4,7 +4,7 @@ import styles from "./character-card.module.css";
 interface CharInfo {
   name: string;
   image: string;
-  description?: string;
+  nameComplement?: string;
 }
 const CharacterCard = (props: CharInfo) => {
   const [hover, setHover] = useState(false);
@@ -16,20 +16,23 @@ const CharacterCard = (props: CharInfo) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <img
+      <div
         className={
           hover
             ? "border-b-[4px] border-solid border-b-secondaryRed transform scale-105 transition-all duration-300"
             : "border-b-[4px] border-solid border-b-secondaryRed"
         }
-        width="100%"
-        height="210px"
-        src={props.image}
-        alt={props.name}
+        style={{
+          backgroundImage: `url('${props.image}')`,
+          width: "192px",
+          height: "210px",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
       />
       <div className="p-4 font-marvel text-2xl h-20">{props.name}</div>
       <div className="p-4 font-marvel text-secondaryGray">
-        {props.description}
+        {props.nameComplement}
       </div>
     </div>
   );
